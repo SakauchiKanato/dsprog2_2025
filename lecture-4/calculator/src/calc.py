@@ -30,14 +30,21 @@ class ExtraActionButton(CalcButton):
         self.bgcolor = ft.Colors.BLUE_GREY_100
         self.color = ft.Colors.BLACK
 
+class AdditionalActionButton(CalcButton):
+    def __init__(self, text, button_clicked):
+        CalcButton.__init__(self, text, button_clicked)
+        self.bgcolor = ft.Colors.GREY_500
+        self.color = ft.Colors.WHITE
+
 
 class CalculatorApp(ft.Container):
     def __init__(self):
         super().__init__()
         self.reset()
 
-        self.result = ft.Text(value="0", color=ft.Colors.WHITE, size=20)
-        self.width = 350
+        self.result = ft.Text(value="0", color=ft.Colors.WHITE, size=40)
+        self.width = 500
+        self.height = 600
         self.bgcolor = ft.Colors.BLACK
         self.border_radius = ft.border_radius.all(20)
         self.padding = 20
@@ -83,6 +90,19 @@ class CalculatorApp(ft.Container):
                         ActionButton(text="=", button_clicked=self.button_clicked),
                     ]
                 ),
+                ft.Row(
+                    controls=[
+                        AdditionalActionButton(text="sin", button_clicked=self.button_clicked),
+                        AdditionalActionButton(text="cos", button_clicked=self.button_clicked),
+                        AdditionalActionButton(text="tan", button_clicked=self.button_clicked),
+                    ]
+                ),
+                ft.Row(
+                    controls=[
+                        AdditionalActionButton(text="x^2", button_clicked=self.button_clicked),
+                        AdditionalActionButton(text="x!", button_clicked=self.button_clicked),
+                    ]
+                )
             ]
         )
 
@@ -123,6 +143,30 @@ class CalculatorApp(ft.Container):
 
             elif float(self.result.value) < 0:
                 self.result.value = str(self.format_number(abs(float(self.result.value))))
+
+        elif data in ("sin"):
+            import math
+            self.result.value = self.format_number(math.sin(math.radians(float(self.result.value))))
+            self.new_operand = True
+
+        elif data in ("cos"):
+            import math
+            self.result.value = self.format_number(math.cos(math.radians(float(self.result.value))))
+            self.new_operand = True
+
+        elif data in ("tan"):
+            import math
+            self.result.value = self.format_number(math.tan(math.radians(float(self.result.value))))
+            self.new_operand = True
+        
+        elif data in ("x^2"):
+            self.result.value = self.format_number(float(self.result.value) ** 2)
+            self.new_operand = True
+        
+        elif data in ("x!"):
+            import math
+            self.result.value = self.format_number(math.factorial(int(float(self.result.value))))
+            self.new_operand = True
 
         self.update()
 
